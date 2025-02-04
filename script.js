@@ -37,6 +37,7 @@ function displayAgenda(userId) {
   } else {
     const message = document.createElement("li");
     message.textContent = "No agenda found for this user.";
+    message.setAttribute('role', 'alert');  // Ensures screen reader announces the message
     agendaList.appendChild(message);
   }
 }

@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <script type="module" src="script.js"></script>
   </head>
   <body>
-    <select id="userDropdown">
-      <!-- User options will be populated here -->
-    </select>
-    <input type="text" id="searchBar" placeholder="Search agendas..." />
-    <ul id="agendaList">
-      <!-- User agendas will be displayed here -->
-    </ul>
+    <form>
+      <select id="userDropdown">
+        <!-- User options will be populated here -->
+      </select>
+      <input type="text" id="searchBar" placeholder="Search agendas..." />
+      <ul id="agendaList">
+        <!-- User agendas will be displayed here -->
+      </ul>
+      <fieldset class="form-delivery">
+        <legend><b>Please select your Delivery Date between the following 4 weeks.</b></legend>
+      
+        <label for="delivery-date"></label>
+        <input type="date" id="delivery-date" name="delivery-date" min="2024-11-18" max="2024-12-14">
+      </fieldset>
+      <button>Submit</button>
+    </form>
   </body>
 </html>

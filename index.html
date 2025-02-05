@@ -1,28 +1,47 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spaced Repetition Tracker</title>
-    <script type="module" src="script.js" defer></script>
-  </head>
-  <body>
-    <main>
-      <section>
-        <!-- Add accessible labels for form elements -->
-        <label for="userDropdown">Select a User</label>
-        <select id="userDropdown" aria-label="Select a user">
-          <!-- User options will be populated here -->
-        </select>
 
-        <label for="searchBar">Search Agenda</label>
-        <input type="text" id="searchBar" placeholder="Search agendas..." aria-label="Search agenda items" />
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spaced Repetition Tracker</title>
+  <script type="module" src="script.js" defer></script>
+</head>
 
-        <!-- Use aria-live to announce changes in the agenda list dynamically -->
-        <ul id="agendaList" aria-live="polite">
-          <!-- User agendas will be displayed here -->
-        </ul>
-      </section>
-    </main>
-  </body>
+<body>
+  <main>
+    <section>
+      <!-- Add accessible labels for form elements -->
+      <label for="userDropdown">Select a User</label>
+      <select id="userDropdown" aria-label="Select a user">
+        <!-- User options will be populated here -->
+      </select>
+
+      <label for="searchBar">Search Agenda</label>
+      <input type="text" id="searchBar" placeholder="Search agendas..." aria-label="Search agenda items" />
+    </section>
+
+    <section>
+      <h2>Agenda</h2>
+      <ul id="agendaList" aria-live="polite">
+        <!-- User agendas will be displayed here -->
+      </ul>
+    </section>
+
+    <section>
+      <h2>Add a New Topic</h2>
+      <form id="topicForm">
+        <label for="topicName">Topic Name:</label>
+        <input type="text" id="topicName" required />
+    
+        <label for="datePicker">Select Date:</label>
+        <input type="date" id="datePicker" required />
+    
+        <button type="submit">Add Topic</button>
+      </form>
+    </section>
+
+  </main>
+</body>
+
 </html>

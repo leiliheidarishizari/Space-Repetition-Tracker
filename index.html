@@ -1,26 +1,31 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <script type="module" src="script.js"></script>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge>
+    <script type="module" src="script.js" defer></script>
+    <title>Spaced Repetition Tracker</title>
   </head>
   <body>
     <form id="studyForm">
-      <select id="userDropdown">
-        <!-- User options will be populated here -->
-      </select>
-      <input type="text" id="searchBar" placeholder="Search agendas..." />
-      <ul id="agendaList">
-        <!-- User agendas will be displayed here -->
-      </ul>
-      <fieldset>
-        <legend><b>Please program your date study.</b></legend>
-      
-        <label for="studyDate-picker"></label>
-        <input type="date" id="studyDate-picker" name="delivery-date">
-      </fieldset>
+        <!-- Add accessible labels for form elements -->
+        <label for="userDropdown">Select a User</label>
+        <select id="userDropdown" aria-label="Select a user">
+          <!-- User options will be populated here -->
+        </select>
+
+        <label for="searchBar">Search Agenda</label>
+        <input type="text" id="searchBar" placeholder="Search agendas..." aria-label="Search agenda items" />
+
+        <!-- Use aria-live to announce changes in the agenda list dynamically -->
+        <ul id="agendaList" aria-live="polite">
+         <fieldset>
+          <legend><b>Please program your date study.</b></legend>
+
+          <label for="studyDate-picker"></label>
+          <input type="date" id="studyDate-picker" name="delivery-date">
+         </fieldset>
       <button type="submit">Submit</button>
     </form>
   </body>

@@ -1,102 +1,61 @@
-// ================== date-picker ====================
 
+import { getData, addData } from './storage.js';  // Import storage functions
+import { users } from './userData.js';  // Import user data
 
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("studyForm");
-  const topicInput = document.getElementById("searchBar");
-  const dateInput = document.getElementById("studyDate-picker");
-  const userDropdown = document.getElementById("userDropdown");
-  const agendaList = document.getElementById("agendaList");
+const userDropdown = document.getElementById("userDropdown");
+const agendaList = document.getElementById("agendaList");
+const searchBar = document.getElementById("searchBar");
 
-  const today = new Date().toISOString().split("T")[0];
-  dateInput.value = today; // Default to today's date
+// Populate the dropdown with user names
+users.forEach(user => {
+  const option = document.createElement("option");
+  option.value = user.id;
+  option.textContent = user.name;
+  userDropdown.appendChild(option);
 
-  // Simulating user options (this should be dynamic in a real app)
-  const users = ["User 1", "User 2", "User 3", "User 4", "User 5"];
-  users.forEach((user, index) => {
-    const option = document.createElement("option");
-    option.value = `user${index + 1}`;
-    option.textContent = user;
-    userDropdown.appendChild(option);
-  });
-
-  form.addEventListener("submit", function (event) {
-    event.preventDefault();
-
-    const topic = topicInput.value.trim();
-    const selectedDate = new Date(dateInput.value);
-    const userId = userDropdown.value;
-
-    if (!topic) {
-      alert("Please enter a topic.");
-      return;
-    }
-
-    const revisionDates = calculateRevisionDates(selectedDate);
-    const newData = { topic, selectedDate: dateInput.value, revisionDates };
-
-    addData(userId, newData); // Save to storage
-    updateAgendaUI(userId); // Refresh UI
-
-    form.reset();
-    dateInput.value = today; // Reset to today's date
-  });
-
-  function calculateRevisionDates(startDate) {
-    return {
-      "1 Week": formatDate(addDays(startDate, 7)),
-      "1 Month": formatDate(addDays(startDate, 30)),
-      "3 Months": formatDate(addDays(startDate, 90)),
-      "6 Months": formatDate(addDays(startDate, 180)),
-      "1 Year": formatDate(addDays(startDate, 365)),
-    };
+  // If there's no agenda in localStorage, populate it
+  const storedAgenda = getData(user.id);
+  if (!storedAgenda || storedAgenda.length === 0) {
+    addData(user.id, user.agenda);
   }
+});
 
-  function addDays(date, days) {
-    const newDate = new Date(date);
-    newDate.setDate(newDate.getDate() + days);
-    return newDate;
-  }
+// Set the default user to Leili (first in the list)
+userDropdown.value = users[0].id;
+displayAgenda(userDropdown.value);
 
-  function formatDate(date) {
-    return date.toISOString().split("T")[0];
-  }
+// Display agenda for a specific user
+function displayAgenda(userId) {
+  agendaList.innerHTML = "";  // Clear any previous agenda items
+  const userAgenda = getData(userId);
 
-  function addData(userId, data) {
-    const storedData = JSON.parse(localStorage.getItem(userId)) || [];
-    storedData.push(data);
-    localStorage.setItem(userId, JSON.stringify(storedData));
-  }
-
-  function updateAgendaUI(userId) {
-    agendaList.innerHTML = ""; // Clear current agenda
-
-    const storedData = JSON.parse(localStorage.getItem(userId)) || [];
-    if (storedData.length === 0) {
-      agendaList.innerHTML = "<li>No agenda found for this user.</li>";
-      return;
-    }
-
-    storedData.forEach((item) => {
+  if (userAgenda && userAgenda.length > 0) {
+    userAgenda.forEach(item => {
       const listItem = document.createElement("li");
-      listItem.innerHTML = `<strong>${item.topic}</strong> - Start: ${item.selectedDate}<br>
-            📅 Revisions:
-            <ul>
-                <li>1 Week: ${item.revisionDates["1 Week"]}</li>
-                <li>1 Month: ${item.revisionDates["1 Month"]}</li>
-                <li>3 Months: ${item.revisionDates["3 Months"]}</li>
-                <li>6 Months: ${item.revisionDates["6 Months"]}</li>
-                <li>1 Year: ${item.revisionDates["1 Year"]}</li>
-            </ul>`;
+      listItem.textContent = item;
       agendaList.appendChild(listItem);
     });
+  } else {
+    const message = document.createElement("li");
+    message.textContent = "No agenda found for this user.";
+    message.setAttribute('role', 'alert');  // Ensures screen reader announces the message
+    agendaList.appendChild(message);
   }
+}
 
-  // When user selects a different user, update the agenda
-  userDropdown.addEventListener("change", function () {
-    updateAgendaUI(userDropdown.value);
+// Event listener to update agenda when a user is selected
+userDropdown.addEventListener("change", function() {
+  const selectedUserId = userDropdown.value;
+  displayAgenda(selectedUserId);
+});
+
+// Implement search functionality for agenda items
+searchBar.addEventListener("input", function() {
+  const searchTerm = searchBar.value.toLowerCase();
+  const agendaItems = document.querySelectorAll("#agendaList li");
+
+  agendaItems.forEach(item => {
+    const text = item.textContent.toLowerCase();
+    item.style.display = text.includes(searchTerm) ? "" : "none";
   });
-
-  // Load agenda for the first user by default
-  updateAgendaUI(userDropdown.value);
 });

@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spaced Repetition Tracker</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge>
     <script type="module" src="script.js" defer></script>
+    <title>Spaced Repetition Tracker</title>
   </head>
   <body>
-    <main>
-      <section>
+    <form id="studyForm">
         <!-- Add accessible labels for form elements -->
         <label for="userDropdown">Select a User</label>
         <select id="userDropdown" aria-label="Select a user">
@@ -20,9 +20,13 @@
 
         <!-- Use aria-live to announce changes in the agenda list dynamically -->
         <ul id="agendaList" aria-live="polite">
-          <!-- User agendas will be displayed here -->
-        </ul>
-      </section>
-    </main>
+         <fieldset>
+          <legend><b>Please program your date study.</b></legend>
+
+          <label for="studyDate-picker"></label>
+          <input type="date" id="studyDate-picker" name="delivery-date">
+         </fieldset>
+      <button type="submit">Submit</button>
+    </form>
   </body>
 </html>

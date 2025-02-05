@@ -1,15 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <script type="module" src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spaced Repetition Tracker</title>
+    <script type="module" src="script.js" defer></script>
   </head>
   <body>
-    <select id="userDropdown">
-      <!-- User options will be populated here -->
-    </select>
-    <input type="text" id="searchBar" placeholder="Search agendas..." />
-    <ul id="agendaList">
-      <!-- User agendas will be displayed here -->
-    </ul>
+    <main>
+      <section>
+        <!-- Add accessible labels for form elements -->
+        <label for="userDropdown">Select a User</label>
+        <select id="userDropdown" aria-label="Select a user">
+          <!-- User options will be populated here -->
+        </select>
+
+        <label for="searchBar">Search Agenda</label>
+        <input type="text" id="searchBar" placeholder="Search agendas..." aria-label="Search agenda items" />
+
+        <!-- Use aria-live to announce changes in the agenda list dynamically -->
+        <ul id="agendaList" aria-live="polite">
+          <!-- User agendas will be displayed here -->
+        </ul>
+      </section>
+    </main>
   </body>
 </html>

@@ -7,7 +7,7 @@
     <script type="module" src="script.js"></script>
   </head>
   <body>
-    <form>
+    <form id="studyForm">
       <select id="userDropdown">
         <!-- User options will be populated here -->
       </select>
@@ -15,13 +15,13 @@
       <ul id="agendaList">
         <!-- User agendas will be displayed here -->
       </ul>
-      <fieldset class="form-delivery">
-        <legend><b>Please select your Delivery Date between the following 4 weeks.</b></legend>
+      <fieldset>
+        <legend><b>Please program your date study.</b></legend>
       
-        <label for="delivery-date"></label>
-        <input type="date" id="delivery-date" name="delivery-date" min="2024-11-18" max="2024-12-14">
+        <label for="studyDate-picker"></label>
+        <input type="date" id="studyDate-picker" name="delivery-date">
       </fieldset>
-      <button>Submit</button>
+      <button type="submit">Submit</button>
     </form>
   </body>
 </html>

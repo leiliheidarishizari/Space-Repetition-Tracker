@@ -4,6 +4,9 @@ import { users } from './userData.js';  // Import user data
 const userDropdown = document.getElementById("userDropdown");
 const agendaList = document.getElementById("agendaList");
 const searchBar = document.getElementById("searchBar");
+const topicForm = document.getElementById("topicForm");
+const topicName = document.getElementById("topicName");
+const datePicker = document.getElementById("datePicker");
 
 // Populate the dropdown with user names
 users.forEach(user => {
@@ -58,3 +61,5 @@ searchBar.addEventListener("input", function() {
     item.style.display = text.includes(searchTerm) ? "" : "none";
   });
 });
+
+

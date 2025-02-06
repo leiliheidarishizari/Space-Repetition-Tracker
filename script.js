@@ -33,29 +33,6 @@ displayAgenda(userDropdown.value);
 // Set the default date to today
 const today = new Date().toISOString().split("T")[0];
 datePicker.value = today;
-
-
-// Display agenda for a specific user
-// function displayAgenda(userId) {
-//   agendaList.innerHTML = "";  // Clear any previous agenda items
-//   const userAgenda = getData(userId);
-
-//   if (userAgenda && userAgenda.length > 0) {
-//     userAgenda.forEach(item => {
-//       const listItem = document.createElement("li");
-//       listItem.textContent = item;
-//       agendaList.appendChild(listItem);
-//     });
-//   } else {
-//     const message = document.createElement("li");
-//     message.textContent = "No agenda found for this user.";
-//     message.setAttribute('role', 'alert');  // Ensures screen reader announces the message
-//     agendaList.appendChild(message);
-//   }
-// }
-
-// -------------------- New implementation
-
 // Display agenda for a specific user
 function displayAgenda(userId) {
   agendaList.innerHTML = ""; // Clear previous agenda items
@@ -110,8 +87,6 @@ searchBar.addEventListener("input", function() {
     item.style.display = text.includes(searchTerm) ? "" : "none";
   });
 });
-
-// ===================== handle submit and date-picker
 
 // Event listener for form submission to add a new topic
 topicForm.addEventListener("submit", function (event) {

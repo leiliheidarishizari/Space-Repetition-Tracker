@@ -1,60 +1,121 @@
-import { getData, addData } from './storage.js';  // Import storage functions
-import { users } from './userData.js';  // Import user data
+import { sampleData } from './userData.js'; // Import mock data from userData.js
+import { getUserIds, getData, addData } from './storage.js'; // Import storage functions from storage.js
 
-const userDropdown = document.getElementById("userDropdown");
-const agendaList = document.getElementById("agendaList");
-const searchBar = document.getElementById("searchBar");
+let currentUserId = "1";  // Default user (User 1)
 
-// Populate the dropdown with user names
-users.forEach(user => {
-  const option = document.createElement("option");
-  option.value = user.id;
-  option.textContent = user.name;
-  userDropdown.appendChild(option);
-
-  // If there's no agenda in localStorage, populate it
-  const storedAgenda = getData(user.id);
-  if (!storedAgenda || storedAgenda.length === 0) {
-    addData(user.id, user.agenda);
-  }
-});
-
-// Set the default user to Leili (first in the list)
-userDropdown.value = users[0].id;
-displayAgenda(userDropdown.value);
-
-// Display agenda for a specific user
-function displayAgenda(userId) {
-  agendaList.innerHTML = "";  // Clear any previous agenda items
-  const userAgenda = getData(userId);
-
-  if (userAgenda && userAgenda.length > 0) {
-    userAgenda.forEach(item => {
-      const listItem = document.createElement("li");
-      listItem.textContent = item;
-      agendaList.appendChild(listItem);
+/**
+ * Function to initialize localStorage with mock data for each user.
+ */
+function initializeLocalStorage() {
+    getUserIds().forEach(userId => {
+        if (!getData(userId)) {  // If no data is found for this user in localStorage
+            addData(userId, sampleData[userId]); // Add mock data for the user
+        }
     });
-  } else {
-    const message = document.createElement("li");
-    message.textContent = "No agenda found for this user.";
-    message.setAttribute('role', 'alert');  // Ensures screen reader announces the message
-    agendaList.appendChild(message);
-  }
 }
 
-// Event listener to update agenda when a user is selected
-userDropdown.addEventListener("change", function() {
-  const selectedUserId = userDropdown.value;
-  displayAgenda(selectedUserId);
-});
+/**
+ * Function to display the user's agenda
+ * @param {string} userId - The ID of the user
+ */
+function displayAgenda(userId) {
+    const agenda = getData(userId); // Get the agenda from localStorage
+    console.log('Displaying agenda for user', userId, agenda);  // Debugging log
 
-// Implement search functionality for agenda items
-searchBar.addEventListener("input", function() {
-  const searchTerm = searchBar.value.toLowerCase();
-  const agendaItems = document.querySelectorAll("#agendaList li");
+    const agendaContainer = document.getElementById("agendaContainer");
+    agendaContainer.innerHTML = '';  // Clear existing agenda content
 
-  agendaItems.forEach(item => {
-    const text = item.textContent.toLowerCase();
-    item.style.display = text.includes(searchTerm) ? "" : "none";
-  });
-});
+    if (!agenda || agenda.length === 0) {
+        agendaContainer.innerHTML = `<p>No agenda for user ${userId}</p>`;
+        return;
+    }
+
+    agenda.forEach((item, index) => {
+        const topic = item.topic || 'No topic provided';
+        const date = item.date || 'No date provided';
+
+        agendaContainer.innerHTML += `
+            <p>${index + 1}. Topic: ${topic}, Date: ${date}</p>
+        `;
+    });
+}
+
+/**
+ * Handle form submission to add a new agenda item for the current user.
+ * @param {Event} event - The form submit event
+ */
+function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const topic = document.getElementById("topicInput").value;
+    const date = document.getElementById("dateInput").value;
+
+    if (!topic || !date) {
+        alert("Please fill in both fields.");
+        return;
+    }
+
+    const newAgendaItem = { topic, date };
+    console.log('Adding new agenda item', newAgendaItem);  // Debugging log
+
+    // Add new agenda item for the current user
+    addData(currentUserId, [newAgendaItem]);  // Add new agenda to the user's data
+
+    // Clear the form fields
+    document.getElementById("topicInput").value = '';
+    document.getElementById("dateInput").value = '';
+
+    // Refresh the displayed agenda
+    displayAgenda(currentUserId);
+}
+
+/**
+ * Setup the user selection dropdown and default agenda
+ */
+function setupUserSelection() {
+    const userSelect = document.getElementById("userSelect");
+    
+    // Populate dropdown with all user IDs
+    getUserIds().forEach(userId => {
+        const option = document.createElement("option");
+        option.value = userId;
+        option.textContent = `User ${userId}`;
+        userSelect.appendChild(option);
+    });
+
+    userSelect.value = currentUserId;  // Set default user
+    userSelect.addEventListener("change", (event) => {
+        currentUserId = event.target.value;
+        displayAgenda(currentUserId);  // Show the selected user's agenda
+    });
+}
+
+/**
+ * Initialize the page with the default user and setup event listeners.
+ */
+function init() {
+    // Initialize localStorage with mock data
+    initializeLocalStorage();
+
+    // Set default date in the form
+    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    document.getElementById("dateInput").value = today;
+
+    // Display the agenda for the default user
+    displayAgenda(currentUserId);
+
+    // Setup the user selection dropdown
+    setupUserSelection();
+
+    // Add event listener for the form submission
+    const form = document.getElementById("agendaForm");
+    form.addEventListener("submit", handleFormSubmit);
+}
+
+// Initialize the page when it loads
+window.onload = init;
+
+
+
+
+

@@ -1,58 +1,23 @@
 // Mock data for users and their agendas
-export const users = [
-    {
-      id: "1",
-      name: "Leili",
-      agenda: [
-        "Learn JavaScript fundamentals",
-        "Complete coding challenges on LeetCode",
-        "Study data structures and algorithms",
-        "Build a personal portfolio website",
-        "Contribute to open-source projects"
-      ]
-    },
-    {
-      id: "2",
-      name: "Karla",
-      agenda: [
-        "Understand object-oriented programming concepts",
-        "Practice problem-solving with HackerRank",
-        "Explore web development frameworks",
-        "Develop a mobile application using React Native",
-        "Participate in coding competitions"
-      ]
-    },
-    {
-      id: "3",
-      name: "Alice",
-      agenda: [
-        "Learn Python programming",
-        "Work on machine learning projects",
-        "Study databases and SQL",
-        "Build a RESTful API",
-        "Contribute to data science communities"
-      ]
-    },
-    {
-      id: "4",
-      name: "Bob",
-      agenda: [
-        "Understand front-end development",
-        "Practice responsive design",
-        "Learn about web accessibility",
-        "Build a personal blog using HTML and CSS",
-        "Explore JavaScript frameworks like React"
-      ]
-    },
-    {
-      id: "5",
-      name: "Charlie",
-      agenda: [
-        "Learn about cloud computing",
-        "Study DevOps practices",
-        "Work on containerization with Docker",
-        "Explore continuous integration and deployment",
-        "Contribute to open-source DevOps tools"
-      ]
-    }
-  ];
+// userData.js
+// Mock data for users and their agendas
+// userData.js
+
+export const sampleData = {
+  "1": [
+      { topic: "JavaScript Basics", date: "2025-02-10" },
+      { topic: "DOM Manipulation", date: "2025-02-15" }
+  ],
+  "2": [
+      { topic: "HTML Basics", date: "2025-02-08" },
+      { topic: "CSS Flexbox", date: "2025-02-12" }
+  ],
+  "3": [],  // No agenda for User 3
+  "4": [
+      { topic: "Node.js Basics", date: "2025-02-18" }
+  ],  // One agenda item for User 4
+  "5": [
+      { topic: "SQL Queries", date: "2025-02-09" }
+  ]
+};
+

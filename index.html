@@ -1,28 +1,33 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Spaced Repetition Tracker</title>
-    <script type="module" src="script.js" defer></script>
-  </head>
-  <body>
-    <main>
-      <section>
-        <!-- Add accessible labels for form elements -->
-        <label for="userDropdown">Select a User</label>
-        <select id="userDropdown" aria-label="Select a user">
-          <!-- User options will be populated here -->
-        </select>
+    <title>User Agenda</title>
+</head>
+<body>
+    <h1>User Agenda</h1>
 
-        <label for="searchBar">Search Agenda</label>
-        <input type="text" id="searchBar" placeholder="Search agendas..." aria-label="Search agenda items" />
+    <label for="userSelect">Choose a user:</label>
+    <select id="userSelect">
+        <!-- Options will be populated by JavaScript -->
+    </select>
 
-        <!-- Use aria-live to announce changes in the agenda list dynamically -->
-        <ul id="agendaList" aria-live="polite">
-          <!-- User agendas will be displayed here -->
-        </ul>
-      </section>
-    </main>
-  </body>
+    <div id="agendaContainer">
+        <!-- User's agenda will be displayed here -->
+    </div>
+
+    <h2>Add a New Agenda Topic</h2>
+    <form id="agendaForm">
+        <label for="topicInput">Topic:</label>
+        <input type="text" id="topicInput" required><br>
+
+        <label for="dateInput">Date:</label>
+        <input type="date" id="dateInput" required><br>
+
+        <button type="submit">Add Agenda</button>
+    </form>
+
+    <script type="module" src="script.js"></script>
+</body>
 </html>

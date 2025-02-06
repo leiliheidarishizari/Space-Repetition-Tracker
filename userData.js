@@ -16,22 +16,13 @@ export const users = [
       name: "Karla",
       agenda: [
         "Understand object-oriented programming concepts",
-        "Practice problem-solving with HackerRank",
-        "Explore web development frameworks",
-        "Develop a mobile application using React Native",
-        "Participate in coding competitions"
+        "Practice problem-solving with HackerRank", 
       ]
     },
     {
       id: "3",
       name: "Alice",
-      agenda: [
-        "Learn Python programming",
-        "Work on machine learning projects",
-        "Study databases and SQL",
-        "Build a RESTful API",
-        "Contribute to data science communities"
-      ]
+      agenda: []
     },
     {
       id: "4",
@@ -40,19 +31,12 @@ export const users = [
         "Understand front-end development",
         "Practice responsive design",
         "Learn about web accessibility",
-        "Build a personal blog using HTML and CSS",
-        "Explore JavaScript frameworks like React"
       ]
     },
     {
       id: "5",
       name: "Charlie",
-      agenda: [
-        "Learn about cloud computing",
-        "Study DevOps practices",
-        "Work on containerization with Docker",
-        "Explore continuous integration and deployment",
-        "Contribute to open-source DevOps tools"
-      ]
+      agenda: []  
     }
   ];
+  

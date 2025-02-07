@@ -1,8 +1,11 @@
+
+// window.onload = function(){
+//  clearData(2)
+// }
+
 import { getData, addData, clearData } from "./storage.js"; // Import storage functions
 import { users } from "./userData.js"; // Import user data
-// window.onload = function(){
-//   clearData(5)
-// }
+
 const userDropdown = document.getElementById("userDropdown");
 const agendaList = document.getElementById("agendaList");
 const searchBar = document.getElementById("searchBar");
@@ -27,13 +30,22 @@ displayAgenda(userDropdown.value);
 // Set the default date to today
 const today = new Date().toISOString().split("T")[0];
 datePicker.value = today;
+
 // Display agenda for a specific user
 function displayAgenda(userId) {
   agendaList.innerHTML = ""; // Clear previous agenda items
   const userAgenda = getData(userId);
   if (userAgenda && userAgenda.length > 0) {
+    // Collect all agenda items with their dates
+    const allAgendaItems = [];
+
     userAgenda.forEach((item) => {
-      if (typeof item === "object" && item.topic && item.revisionDates) {
+      if (
+        item &&
+        typeof item === "object" &&
+        item.topic &&
+        item.revisionDates
+      ) {
         item.revisionDates.forEach((date) => {
           const revisionDate = new Date(date);
           const today = new Date();
@@ -43,13 +55,27 @@ function displayAgenda(userId) {
             const listItem = document.createElement("li");
             listItem.textContent = `${item.topic}, ${formatDate(date)}`;
             agendaList.appendChild(listItem);
+
           }
         });
-      } else {
-        const listItem = document.createElement("li");
-        listItem.textContent = item;
-        agendaList.appendChild(listItem);
+      } else if (item) {
+        // Handle cases where item is a string or doesn't have the expected structure
+        allAgendaItems.push({
+          topic: item,
+          date: new Date(), // Use today's date for sorting
+          formattedDate: "No date",
+        });
       }
+    });
+
+    // Sort the agenda items by date
+    allAgendaItems.sort((a, b) => a.date - b.date);
+
+    // Display the sorted agenda items
+    allAgendaItems.forEach((agendaItem) => {
+      const listItem = document.createElement("li");
+      listItem.textContent = `${agendaItem.topic}, ${agendaItem.formattedDate}`;
+      agendaList.appendChild(listItem);
     });
   } else {
     const message = document.createElement("li");
@@ -72,6 +98,7 @@ userDropdown.addEventListener("change", function () {
 searchBar.addEventListener("input", function () {
   const searchTerm = searchBar.value.toLowerCase();
   const agendaItems = document.querySelectorAll("#agendaList li");
+
   agendaItems.forEach((item) => {
     const text = item.textContent.toLowerCase();
     item.style.display = text.includes(searchTerm) ? "" : "none";
@@ -84,10 +111,7 @@ topicForm.addEventListener("submit", function (event) {
   const selectedDate = datePicker.value;
   if (topic && selectedDate) {
     const today = new Date().toISOString().split("T")[0];
-    // if (selectedDate < today) {
-    //   alert("Please select a date in the future.");
-    // return;
-    //}
+
     // Calculate the revision dates
     const revisionDates = calculateRevisionDates(selectedDate);
     // Create the new agenda item
@@ -111,34 +135,45 @@ export function calculateRevisionDates(startDate) {
   ];
   return intervals.map((interval) => {
     const revisionDate = new Date(startDate);
+// <<<<<<< main
+// =======
+//     const originalDay = revisionDate.getDate(); // Store original day (should be 5)
+
+// >>>>>>> main
     if (interval.days) {
       revisionDate.setDate(revisionDate.getDate() + interval.days);
-    } else if (interval.months) {
-      revisionDate.setMonth(revisionDate.getMonth() + interval.months);
-    } else if (interval.years) {
+    }
+    if (interval.months) {
+      const tempDate = new Date(revisionDate);
+      tempDate.setMonth(revisionDate.getMonth() + interval.months);
+
+      // Ensure day stays the 5th, unless the month doesn't have a 5th
+      if (tempDate.getDate() < originalDay) {
+        tempDate.setDate(5);
+      }
+
+      revisionDate.setTime(tempDate.getTime()); // Apply corrected date
+    }
+    if (interval.years) {
       revisionDate.setFullYear(revisionDate.getFullYear() + interval.years);
     }
-    // Handle edge cases for months with fewer days
-    const maxDay = new Date(
-      revisionDate.getFullYear(),
-      revisionDate.getMonth() + 1,
-      0
-    ).getDate();
-    if (revisionDate.getDate() > maxDay) {
-      revisionDate.setDate(maxDay);
+// <<<<<<< main
+//     // Handle edge cases for months with fewer days
+//     const maxDay = new Date(
+//       revisionDate.getFullYear(),
+//       revisionDate.getMonth() + 1,
+//       0
+//     ).getDate();
+//     if (revisionDate.getDate() > maxDay) {
+//       revisionDate.setDate(maxDay);
+// =======
+
+//     // Final check: If the day is still incorrect, fix it
+//     if (revisionDate.getDate() !== 5) {
+//       revisionDate.setDate(5);
+// >>>>>>> main
     }
     return revisionDate.toISOString().split("T")[0];
   });
-}
-// Function to check if the topic already exists for the user
-function isTopicDuplicate(userId, newTopic) {
-  const existingData = getData(userId) || []; // Fetch the current user's data
-  // Check if a topic with the same name and date already exists (considering the revision dates)
-  return existingData.some(
-    (topic) =>
-      topic.topicName === newTopic.topicName &&
-      topic.date === newTopic.date &&
-      JSON.stringify(topic.revisionDates) ===
-        JSON.stringify(newTopic.revisionDates)
-  );
+
 }

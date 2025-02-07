@@ -1,6 +1,6 @@
 // window.onload = function(){
-//  clearData(5
-//  )
+//  clearData(5)
+
 // }
 import { getData, addData, clearData } from "./storage.js"; // Import storage functions
 import { users } from "./userData.js"; // Import user data

@@ -1,4 +1,3 @@
-
 // window.onload = function(){
 //  clearData(5
 //  )
@@ -169,5 +168,4 @@ export function calculateRevisionDates(startDate) {
 
     return revisionDate.toISOString().split("T")[0];
   });
-
 }

@@ -119,7 +119,7 @@ topicForm.addEventListener("submit", function (event) {
   }
 });
 
-export function calculateRevisionDates(startDate) {
+ function calculateRevisionDates(startDate) {
   const intervals = [
     { days: 7 }, // 1 week
     { months: 1 }, // 1 month
@@ -164,3 +164,4 @@ function isTopicDuplicate(userId, newTopic) {
     JSON.stringify(topic.revisionDates) === JSON.stringify(newTopic.revisionDates)
   );
 }
+module.exports = { calculateRevisionDates };

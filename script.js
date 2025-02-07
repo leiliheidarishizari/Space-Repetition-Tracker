@@ -1,6 +1,6 @@
 
 // window.onload = function(){
-//  clearData(2)
+//  clearData(5)
 // }
 
 import { getData, addData, clearData } from "./storage.js"; // Import storage functions
@@ -135,11 +135,10 @@ export function calculateRevisionDates(startDate) {
   ];
   return intervals.map((interval) => {
     const revisionDate = new Date(startDate);
-// <<<<<<< main
-// =======
-//     const originalDay = revisionDate.getDate(); // Store original day (should be 5)
 
-// >>>>>>> main
+    const originalDay = revisionDate.getDate(); // Store original day (should be 5)
+
+
     if (interval.days) {
       revisionDate.setDate(revisionDate.getDate() + interval.days);
     }
@@ -157,22 +156,7 @@ export function calculateRevisionDates(startDate) {
     if (interval.years) {
       revisionDate.setFullYear(revisionDate.getFullYear() + interval.years);
     }
-// <<<<<<< main
-//     // Handle edge cases for months with fewer days
-//     const maxDay = new Date(
-//       revisionDate.getFullYear(),
-//       revisionDate.getMonth() + 1,
-//       0
-//     ).getDate();
-//     if (revisionDate.getDate() > maxDay) {
-//       revisionDate.setDate(maxDay);
-// =======
 
-//     // Final check: If the day is still incorrect, fix it
-//     if (revisionDate.getDate() !== 5) {
-//       revisionDate.setDate(5);
-// >>>>>>> main
-    }
     return revisionDate.toISOString().split("T")[0];
   });
 

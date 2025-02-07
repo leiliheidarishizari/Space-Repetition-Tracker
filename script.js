@@ -1,6 +1,7 @@
 
 // window.onload = function(){
-//  clearData(5)
+//  clearData(5
+//  )
 // }
 
 import { getData, addData, clearData } from "./storage.js"; // Import storage functions
@@ -24,9 +25,11 @@ users.forEach((user) => {
     addData(user.id, user.agenda);
   }
 });
+
 // Set the default user to Leili (first in the list)
 userDropdown.value = users[0].id;
 displayAgenda(userDropdown.value);
+
 // Set the default date to today
 const today = new Date().toISOString().split("T")[0];
 datePicker.value = today;
@@ -59,6 +62,7 @@ function displayAgenda(userId) {
           }
         });
       } else if (item) {
+
         // Handle cases where item is a string or doesn't have the expected structure
         allAgendaItems.push({
           topic: item,
@@ -84,16 +88,20 @@ function displayAgenda(userId) {
     agendaList.appendChild(message);
   }
 }
+
+
 // Helper function to format dates in a readable format
 function formatDate(date) {
   const options = { day: "numeric", month: "long", year: "numeric" };
   return new Date(date).toLocaleDateString(undefined, options);
 }
+
 // Event listener to update agenda when a user is selected
 userDropdown.addEventListener("change", function () {
   const selectedUserId = userDropdown.value;
   displayAgenda(selectedUserId);
 });
+
 // Implement search functionality for agenda items
 searchBar.addEventListener("input", function () {
   const searchTerm = searchBar.value.toLowerCase();
@@ -104,6 +112,7 @@ searchBar.addEventListener("input", function () {
     item.style.display = text.includes(searchTerm) ? "" : "none";
   });
 });
+
 // Event listener for form submission to add a new topic
 topicForm.addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent default form submission
@@ -125,6 +134,7 @@ topicForm.addEventListener("submit", function (event) {
     displayAgenda(selectedUserId);
   }
 });
+
 export function calculateRevisionDates(startDate) {
   const intervals = [
     { days: 7 }, // 1 week

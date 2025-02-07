@@ -1,5 +1,5 @@
 // window.onload = function(){
-//  clearData(5)
+//  clearData(2)
 // }
 
 import { getData, addData, clearData } from "./storage.js"; // Import storage functions

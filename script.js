@@ -119,7 +119,7 @@ topicForm.addEventListener("submit", function (event) {
   }
 });
 
-function calculateRevisionDates(startDate) {
+export function calculateRevisionDates(startDate) {
   const intervals = [
     { days: 7 }, // 1 week
     { months: 1 }, // 1 month

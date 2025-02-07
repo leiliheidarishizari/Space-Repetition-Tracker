@@ -5,10 +5,6 @@ export const users = [
       name: "Leili",
       agenda: [
         "Learn JavaScript fundamentals",
-        "Complete coding challenges on LeetCode",
-        "Study data structures and algorithms",
-        "Build a personal portfolio website",
-        "Contribute to open-source projects"
       ]
     },
     {

@@ -1,3 +1,4 @@
+
 import { getData, addData, clearData } from './storage.js';  // Import storage functions
 import { users } from './userData.js';  // Import user data
 // window.onload = function(){
@@ -50,10 +51,16 @@ function displayAgenda(userId) {
             agendaList.appendChild(listItem);
           }
         });
-      } else {
-        const listItem = document.createElement("li");
-        listItem.textContent = item;
-        agendaList.appendChild(listItem);
+
+      } else if (item) {
+
+        // Handle cases where item is a string or doesn't have the expected structure
+        allAgendaItems.push({
+          topic: item,
+          date: new Date(), // Use today's date for sorting
+          formattedDate: "No date",
+        });
+
       }
     });
   } else {
@@ -64,6 +71,8 @@ function displayAgenda(userId) {
   }
 }
 
+
+
 // Helper function to format dates in a readable format
 function formatDate(date) {
   const options = { day: "numeric", month: "long", year: "numeric" };
@@ -71,17 +80,17 @@ function formatDate(date) {
 }
 
 // Event listener to update agenda when a user is selected
-userDropdown.addEventListener("change", function() {
+userDropdown.addEventListener("change", function () {
   const selectedUserId = userDropdown.value;
   displayAgenda(selectedUserId);
 });
 
 // Implement search functionality for agenda items
-searchBar.addEventListener("input", function() {
+searchBar.addEventListener("input", function () {
   const searchTerm = searchBar.value.toLowerCase();
   const agendaItems = document.querySelectorAll("#agendaList li");
 
-  agendaItems.forEach(item => {
+  agendaItems.forEach((item) => {
     const text = item.textContent.toLowerCase();
     item.style.display = text.includes(searchTerm) ? "" : "none";
   });
@@ -90,27 +99,18 @@ searchBar.addEventListener("input", function() {
 // Event listener for form submission to add a new topic
 topicForm.addEventListener("submit", function (event) {
   event.preventDefault(); // Prevent default form submission
-
   const topic = topicName.value.trim();
   const selectedDate = datePicker.value;
-
   if (topic && selectedDate) {
     const today = new Date().toISOString().split("T")[0];
-    if (selectedDate < today) {
-      alert("Please select a date in the future.");
-      return;
-    }
 
     // Calculate the revision dates
     const revisionDates = calculateRevisionDates(selectedDate);
-
     // Create the new agenda item
     const newAgendaItem = { topic, revisionDates };
-
     // Get the selected user and store the data
     const selectedUserId = userDropdown.value;
     addData(selectedUserId, [newAgendaItem]); // Store as an array
-
     // Clear form and reset date picker to today
     topicName.value = "";
     datePicker.value = today;
@@ -118,7 +118,7 @@ topicForm.addEventListener("submit", function (event) {
   }
 });
 
- function calculateRevisionDates(startDate) {
+export function calculateRevisionDates(startDate) {
   const intervals = [
     { days: 7 }, // 1 week
     { months: 1 }, // 1 month
@@ -126,41 +126,30 @@ topicForm.addEventListener("submit", function (event) {
     { months: 6 }, // 6 months
     { years: 1 }, // 1 year
   ];
-
   return intervals.map((interval) => {
     const revisionDate = new Date(startDate);
 
+    const originalDay = revisionDate.getDate(); // Store original day (should be 5)
+
+
     if (interval.days) {
       revisionDate.setDate(revisionDate.getDate() + interval.days);
-    } else if (interval.months) {
-      revisionDate.setMonth(revisionDate.getMonth() + interval.months);
-    } else if (interval.years) {
-      revisionDate.setFullYear(revisionDate.getFullYear() + interval.years);
     }
+    if (interval.months) {
+      const tempDate = new Date(revisionDate);
+      tempDate.setMonth(revisionDate.getMonth() + interval.months);
 
-    // Handle edge cases for months with fewer days
-    const maxDay = new Date(
-      revisionDate.getFullYear(),
-      revisionDate.getMonth() + 1,
-      0
-    ).getDate();
-    if (revisionDate.getDate() > maxDay) {
-      revisionDate.setDate(maxDay);
+      // Ensure day stays the 5th, unless the month doesn't have a 5th
+      if (tempDate.getDate() < originalDay) {
+        tempDate.setDate(5);
+      }
+
+      revisionDate.setTime(tempDate.getTime()); // Apply corrected date
+    }
+    if (interval.years) {
+      revisionDate.setFullYear(revisionDate.getFullYear() + interval.years);
     }
 
     return revisionDate.toISOString().split("T")[0];
   });
 }
-
-// Function to check if the topic already exists for the user
-function isTopicDuplicate(userId, newTopic) {
-  const existingData = getData(userId) || []; // Fetch the current user's data
-  
-  // Check if a topic with the same name and date already exists (considering the revision dates)
-  return existingData.some(topic => 
-    topic.topicName === newTopic.topicName && 
-    topic.date === newTopic.date &&
-    JSON.stringify(topic.revisionDates) === JSON.stringify(newTopic.revisionDates)
-  );
-}
-module.exports = { calculateRevisionDates };

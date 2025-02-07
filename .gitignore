@@ -1,0 +1,22 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+*.log
+
+# OS generated files
+.DS_Store
+
+# Environment variables
+.env
+
+# Jest coverage output
+coverage/
+
+# IDE files (e.g., VSCode, IntelliJ)
+.vscode/
+.idea/
+
+# Build output (if any)
+dist/
+build/

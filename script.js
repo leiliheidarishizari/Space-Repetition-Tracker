@@ -1,10 +1,9 @@
-// window.onload = function(){
-//  clearData(5
-//  )
-// }
 
-import { getData, addData, clearData } from "./storage.js"; // Import storage functions
-import { users } from "./userData.js"; // Import user data
+import { getData, addData, clearData } from './storage.js';  // Import storage functions
+import { users } from './userData.js';  // Import user data
+// window.onload = function(){
+//   clearData(2)
+// }
 
 const userDropdown = document.getElementById("userDropdown");
 const agendaList = document.getElementById("agendaList");
@@ -12,12 +11,14 @@ const searchBar = document.getElementById("searchBar");
 const topicForm = document.getElementById("topicForm");
 const topicName = document.getElementById("topicName");
 const datePicker = document.getElementById("datePicker");
+
 // Populate the dropdown with user names
-users.forEach((user) => {
+users.forEach(user => {
   const option = document.createElement("option");
   option.value = user.id;
   option.textContent = user.name;
   userDropdown.appendChild(option);
+
   // If there's no agenda in localStorage, populate it
   const storedAgenda = getData(user.id);
   if (!storedAgenda || storedAgenda.length === 0) {
@@ -32,34 +33,25 @@ displayAgenda(userDropdown.value);
 // Set the default date to today
 const today = new Date().toISOString().split("T")[0];
 datePicker.value = today;
-
 // Display agenda for a specific user
 function displayAgenda(userId) {
   agendaList.innerHTML = ""; // Clear previous agenda items
   const userAgenda = getData(userId);
-  if (userAgenda && userAgenda.length > 0) {
-    // Collect all agenda items with their dates
-    const allAgendaItems = [];
 
+  if (userAgenda && userAgenda.length > 0) {
     userAgenda.forEach((item) => {
-      if (
-        item &&
-        typeof item === "object" &&
-        item.topic &&
-        item.revisionDates
-      ) {
+      if (typeof item === "object" && item.topic && item.revisionDates) {
         item.revisionDates.forEach((date) => {
           const revisionDate = new Date(date);
           const today = new Date();
-          // if (revisionDate >= today) {
-        if (revisionDate.setHours(0, 0, 0, 0) >= today.setHours(0, 0, 0, 0)) {
 
+          if (revisionDate >= today) {
             const listItem = document.createElement("li");
             listItem.textContent = `${item.topic}, ${formatDate(date)}`;
             agendaList.appendChild(listItem);
-
           }
         });
+
       } else if (item) {
 
         // Handle cases where item is a string or doesn't have the expected structure
@@ -68,17 +60,8 @@ function displayAgenda(userId) {
           date: new Date(), // Use today's date for sorting
           formattedDate: "No date",
         });
+
       }
-    });
-
-    // Sort the agenda items by date
-    allAgendaItems.sort((a, b) => a.date - b.date);
-
-    // Display the sorted agenda items
-    allAgendaItems.forEach((agendaItem) => {
-      const listItem = document.createElement("li");
-      listItem.textContent = `${agendaItem.topic}, ${agendaItem.formattedDate}`;
-      agendaList.appendChild(listItem);
     });
   } else {
     const message = document.createElement("li");
@@ -87,6 +70,7 @@ function displayAgenda(userId) {
     agendaList.appendChild(message);
   }
 }
+
 
 
 // Helper function to format dates in a readable format

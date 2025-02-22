@@ -41,11 +41,12 @@ function displayAgenda(userId) {
         typeof item === "object" &&
         item.topic &&
         item.revisionDates
-      ) {
+      ) {//Converting date to a JavaScript Date Object
         item.revisionDates.forEach((date) => {
-          const revisionDate = new Date(date);
-          const today = new Date();
-          // if (revisionDate >= today) {
+          const revisionDate = new Date(date);//Creates a Date object from a stored date.
+          const today = new Date();//Creates a Date object for the exact moment when the code runs.
+          // Filters and displays only future agenda items (by checking revisionDate >= today).
+
         if (revisionDate.setHours(0, 0, 0, 0) >= today.setHours(0, 0, 0, 0)) {
             const listItem = document.createElement("li");
             listItem.textContent = `${item.topic}, ${formatDate(date)}`;
@@ -59,7 +60,7 @@ function displayAgenda(userId) {
       }
     });
     // Sort the agenda items by date
-    allAgendaItems.sort((a, b) => a.date - b.date);
+    allAgendaItems.sort((a, b) => a.date - b.date);//Shows the agenda's items in ascending order
     // Display the sorted agenda items
     allAgendaItems.forEach((agendaItem) => {
       const listItem = document.createElement("li");
@@ -112,6 +113,7 @@ topicForm.addEventListener("submit", function (event) {
     displayAgenda(selectedUserId);
   }
 });
+// This function takes a start date and calculates future revision dates by adding specific time intervals
 export function calculateRevisionDates(startDate) {
   const intervals = [
     { days: 7 }, // 1 week
@@ -122,7 +124,7 @@ export function calculateRevisionDates(startDate) {
   ];
   return intervals.map((interval) => {
     const revisionDate = new Date(startDate);
-    const originalDay = revisionDate.getDate(); // Store original day (should be 5)
+    const originalDay = revisionDate.getDate(); // Store original day 
     if (interval.days) {
       revisionDate.setDate(revisionDate.getDate() + interval.days);
     }
